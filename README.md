@@ -1,10 +1,7 @@
 ## Touchy - Deployment sensitive config
 
 Touchy is deployment sensitive configuration library which means that it changes source of configuration depending of
-detect deployment. In Touchy you can specify different sources of configuration and give them priorities so in case
-of one's absence Touchy will fallback to others down to default if specified. The most important thing about touchy is
-that it abstracts the way configuration is obtained so application code do not depend on any specific configuration
-library or environment.
+detected deployment type. In Touchy you can specify different sources of configuration and give them priorities so in case of one's absence Touchy will fallback to others down to default if specified. The most important thing about touchy is that it abstracts the way configuration is obtained so application code do not depend on any specific configuration library or environment.
 
 ### Supported configurations
 
