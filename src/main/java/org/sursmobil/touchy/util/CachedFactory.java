@@ -74,7 +74,7 @@ public class CachedFactory {
         }
 
         private T getInstance() {
-            return RunUtils.withUncheckThrow(future::get);
+            return RunUtils.withUncheckedThrow(future::get);
         }
     }
 }
