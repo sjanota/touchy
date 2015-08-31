@@ -1,3 +1,3 @@
 rootProject.name = 'touchy'
-include 'touchy-typesafe-config'
+//include 'touchy-typesafe-config'
 

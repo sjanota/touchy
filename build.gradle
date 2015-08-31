@@ -1,15 +1,12 @@
-group 'org.sursmobil.touchy'
-version '1.0-SNAPSHOT'
+group 'com.github.sursmobil'
+version '0.0.1'
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.2'
-  distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+    gradleVersion = '2.5'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
 }
 
 apply plugin: 'java'
-apply plugin: 'maven-publish'
-
-sourceCompatibility = 1.5
 
 repositories {
     mavenCentral()
@@ -17,6 +14,7 @@ repositories {
 
 dependencies {
     compile 'org.javassist:javassist:3.20.0-GA'
-
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
+
+apply from: 'publishing.gradle'

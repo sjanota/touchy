@@ -2,3 +2,5 @@
 .gradle
 build
 *.iml
+credentials.gradle
+touchy-typesafe-config
