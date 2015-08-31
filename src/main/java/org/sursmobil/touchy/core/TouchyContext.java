@@ -5,12 +5,18 @@ package org.sursmobil.touchy.core;
  */
 class TouchyContext {
     private final ConfigCache configCache;
+    private final SourceCache sourceCache;
 
     TouchyContext() {
-        this.configCache = new ConfigCache();
+        this.configCache = new ConfigCache(this);
+        sourceCache = new SourceCache();
     }
 
     public ConfigCache getConfigCache() {
         return configCache;
+    }
+
+    public SourceCache getSourceCache() {
+        return sourceCache;
     }
 }

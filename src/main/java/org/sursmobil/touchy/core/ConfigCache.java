@@ -7,9 +7,11 @@ import org.sursmobil.touchy.util.CachedFactory;
  */
 class ConfigCache {
 
+    private final TouchyContext context;
     private final CachedFactory cache;
 
-    ConfigCache() {
+    ConfigCache(TouchyContext context) {
+        this.context = context;
         cache = CachedFactory.create(this::instantiateConfig);
     }
 
@@ -18,6 +20,6 @@ class ConfigCache {
     }
 
     private <T> T instantiateConfig(Class<T> configClass) {
-        return new ConfigClassParser<>(configClass).createInstance();
+        return new ConfigClassParser<>(context, configClass).createInstance();
     }
 }

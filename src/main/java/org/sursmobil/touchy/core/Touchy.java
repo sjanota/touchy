@@ -5,7 +5,7 @@ package org.sursmobil.touchy.core;
  */
 public class Touchy {
     private static final Touchy instance = new Touchy();
-    
+
     private final TouchyContext context;
 
     private Touchy() {
