@@ -1,6 +1,7 @@
 package org.sursmobil.touchy.core;
 
-import org.sursmobil.touchy.util.CachedFactory;
+
+import org.sursmobil.utils.CachedFactory;
 
 /**
  * Created by CJ on 29/08/2015.

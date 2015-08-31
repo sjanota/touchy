@@ -1,8 +1,8 @@
 package org.sursmobil.touchy.core;
 
 import org.sursmobil.touchy.api.ValueSource;
-import org.sursmobil.touchy.util.CachedFactory;
-import org.sursmobil.touchy.util.Instantiate;
+import org.sursmobil.utils.CachedFactory;
+import org.sursmobil.utils.Instantiate;
 
 /**
  * Created by CJ on 31/08/2015.

@@ -1,7 +1,7 @@
 package org.sursmobil.touchy.core;
 
 import org.sursmobil.touchy.api.Source;
-import org.sursmobil.touchy.util.MethodUtil;
+import org.sursmobil.utils.MethodUtil;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
