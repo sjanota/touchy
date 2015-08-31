@@ -1,4 +1,4 @@
-package org.sursmobil.touchy.source;
+package org.sursmobil.touchy.system;
 
 import org.sursmobil.touchy.api.PropertyType;
 import org.sursmobil.touchy.api.ValueSource;
@@ -7,21 +7,21 @@ import org.sursmobil.touchy.util.CommonParsers;
 /**
  * Created by CJ on 11/08/2015.
  */
-public class SystemProperty implements ValueSource {
+public class EnvVar implements ValueSource {
     @Override
     public boolean isSet(String propertyName) {
-        return System.getProperty(propertyName) != null;
+        return System.getenv(propertyName) != null;
     }
 
     @Override
     public Object get(String propertyName, PropertyType propertyType) {
-        String plainText = System.getProperty(propertyName);
+        String plainText = System.getenv(propertyName);
         return parse(propertyName, propertyType, plainText);
     }
 
     @Override
     public Object getList(String propertyName, PropertyType propertyType) {
-        String plainText = System.getProperty(propertyName);
+        String plainText = System.getenv(propertyName);
         return parseList(propertyName, propertyType, plainText);
     }
 

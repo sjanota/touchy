@@ -1,8 +1,8 @@
 package org.sursmobil.touchy;
 
 import org.sursmobil.touchy.api.Source;
-import org.sursmobil.touchy.source.EnvVar;
-import org.sursmobil.touchy.source.SystemProperty;
+import org.sursmobil.touchy.system.EnvVar;
+import org.sursmobil.touchy.system.SystemProperty;
 
 import java.util.List;
 
