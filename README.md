@@ -7,19 +7,22 @@ detected deployment type. In Touchy you can specify different sources of configu
 
  1. System property - Touchy itself
  2. Environmental variable - Touchy itself
- 3. Typesafe config
+ 3. Typesafe config - https://github.com/sursmobil/touchy-typesafe-config
 
 ### Requirements
 Touchy uses bytecode manipulation to achieve what it does so it cannot be used in environments where such thing is
 not possible.
 
 ### Usage
+Touchy can be found in Maven Central repository. For example, to use it from gradle one can add following dependency:
 
-To use Touchy all that is need to be done is to create a unit (class, abstract class or interface) which
+        'com.github.sursmobil:touchy:0.1.0'
+
+To use Touchy in project all that is need to be done is to create a unit (class, abstract class or interface) which
 implementation will be used to access configuration. Such unit can only declare methods taking no arguments and
 returning a value (pure getters) except static methods. Currently Touchy supports strings, booleans and integers as well
- as lists of them. Config method also has to be annotated with at least one Source annotation or be implemented to
- return default value;
+as lists of them. Config method also has to be annotated with at least one Source annotation or be implemented to
+return default value;
 
 #### Example
 Simple definition could look like this:
@@ -67,15 +70,15 @@ environmental variable MY_STRING will be used only if system property MY_STRING 
 determined (both are missing) ValueMissingException will be thrown on attempt to get that value.
 
 #### Defaults
-In many case program can use default values if configuration is missing. One could surround every call to config with
- try - catch block catching any ValueMissingException and returning default instead. Luckily it is not necessary. In
- Touchy defaults can be specified by simply defining the method. In such case configuration unit will be class or
- abstract class rather then interface, for example:
+In many cases program can use default values if configuration is missing. One could surround every call to config with
+try - catch block catching any ValueMissingException and returning default instead. Luckily it is not necessary. In
+Touchy defaults can be specified by simply defining the method. In such case configuration unit will be class or
+abstract class rather then interface, for example:
 
         public abstract class ConfigWithDefault {
 
             @Source(type = EnvVar.class, name = "MY_DEFAULT_STRING", priority = 1)
-            public String getwithDefualt() {
+            public String getWithDefualt() {
                 return "default"
             }
 
@@ -98,29 +101,57 @@ Touchy supports Lists of booleans, strings and integers as well as those types, 
 
         }
 
-List definition is source type dependant. For example SystemProperty and EnvVar understands List as values values
+List definition is source type dependant. For example SystemProperty and EnvVar understands List as values
 separated with path.separator, so previous example could use values like 'true;false;true' in Windows or
 'true:false:true' in Unix. Other configuration libraries uses other format (typesafe config has dedicated accessors),
- but it all does not matter as Touchy abstracts it from application.
+but it all does not matter as Touchy abstracts it from application.
 
+#### Plugins
+New functionality can be included in Touchy using plugins. By default Touchy loads all classes he can find in
+classpath annotated with TouchyPlugin annotation as plugins. If plugin should not be applied automatically after
+touchy creation method Touchy::usePlugin can be used to load it into Touchy instance.
+
+What is a plugin? Plugin in Touchy is any class. Library uses annotation to determine which parts of this class
+should be used by Touchy. As of version 0.1.0 only ValueSources can be supplied via plugin, but more content is on
+its way.
+
+Possible annotations:
+ * ValueSourceSupplier - can be used on field or method. Value assigned to this field or value returned by this method
+ will be used when creating config. Field value is read only once, when loading plugin, so it is
+ needed that this value is set on instance creation. Also field has to be accessible. Value returned by method is taken
+ each time new instance of ValueSource is required, which means for each config entry.
+
+Example plugin could look like following:
+
+        @TouchyPlugin // This annotation makes Touchy load this plugin by default
+        public class MyPlugin {
+
+            @ValueSourceSupplier
+            public final MyStaticValueSource staticSource = new MyStaticValueSource;
+
+            @ValueSourceSuplier
+            public MyDynamicValueSource getDynamicSource() {
+                return new MyDynamicValueSource();
+            }
+        }
 
 #### Custom ValuesSource
 Touchy uses implementations of ValueSource interface to obtain configuration values, so alone it is not strictly
 configuration library. It does not provide any additional way to pass config to application, only abstracts exiting ones
-. Sometimes it maybe necessary to implement custom ValueSource for specific environment (or because there is no
+. Sometimes it may be necessary to implement custom ValueSource for specific environment (or because there is no
 support for that library and Touchy). ValueSource contains set of methods to implement:
  * boolean isSet(String property) - should return true if property is defined in this source
  * Object get(String property, PropertyType type) - should return value of property parsed as specified by PropertyType
  * Object getList(String property, PropertyType type) - works similar to get method, but specified property is list
  of PropertyType
 
- ValueSource will use PropertyType to determine type of requested property. PropertyType contains
- Visitor interface which allow to ensure that all types supported by Touchy are implemented in ValueSource. We
- encourage to use this interface in custom implementations rather then switches to quickly find any breaking changes
- in supported types at compilation time.
+ValueSource will use PropertyType to determine type of requested property. PropertyType contains
+Visitor interface which allow to ensure that all types supported by Touchy are implemented in ValueSource. We
+encourage to use this interface in custom implementations rather then switches to quickly find any breaking changes
+in supported types at compilation time.
 
 ### Excluding Touchy from project
 If Touchy is to be excluded from project (what we do not recommend) there is nothing to do in application, only in
-configuration class as Touchy is based on annotations. When you decide to not use Touchy anymore you configuration i
-nhole application is still hidden behind interface so all that is needed to be done is to provide different
+configuration class as Touchy is based on annotations. When you decide to not use Touchy anymore you configuration in
+hole application is still hidden behind interface so all that is needed to be done is to provide different
 implementation.
